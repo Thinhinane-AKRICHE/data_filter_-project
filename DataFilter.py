@@ -87,3 +87,30 @@ class DataFilter:
     def display_data(self):
         for item in self.data:
             print(item)
+
+# Statistiques des données
+
+    def show_stats(self):
+        if not self.data:
+            print("Aucune donnée disponible.")
+            return
+        keys = self.data[0].keys()  # renvoie les cles du premier dictionnaire === cles de tous dictionnaires de la liste
+        for key in keys:
+            values = [item.get(key) for item in self.data if item.get(key) is not None] #item c'est le dic -> item.get(key) renvoie la la vaeur de la clé
+            if all(isinstance(v, (int, float)) for v in values): #vérifier si toutes conditions à l'intérieur sont True : on a des valeurs numérique
+                print(f"  Min: {min(values)}")
+                print(f"  Max: {max(values)}")
+                print(f"  Average: {sum(values) / len(values):.2f}")
+
+            elif all(isinstance(v, bool) for v in values):
+                true_count = sum(1 for v in values if v)
+                false_count = len(values) - true_count
+                total = len(values)
+                print(f"  % True: {true_count / total * 100:.2f}%")
+                print(f"  % False: {false_count / total * 100:.2f}%")
+
+            elif all(isinstance(v, list) for v in values):
+                lengths = [len(v) for v in values]
+                print(f"  Min length: {min(lengths)}")
+                print(f"  Max length: {max(lengths)}")
+                print(f"  Average length: {sum(lengths) / len(lengths):.2f}")
